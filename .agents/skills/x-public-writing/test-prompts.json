@@ -1,0 +1,56 @@
+{
+  "description": "x-public-writing 测试提示集 — 用于验证打磨前后行为变化",
+  "baseline": "SKILL.md.baseline",
+  "version": "round-1 (前置检查点 + 失败模式编码)",
+  "prompts": [
+    {
+      "id": "normal-short-tweet",
+      "category": "正常用例",
+      "input": "今天读了一篇关于 RAG 系统里 chunk size 对检索精度影响的论文。实验发现 chunk overlap 设到 15% 时 recall 最高。方法：调整了 retrieval pipeline 后做了一次 A/B 测试。结论：chunk overlap 这个参数以前被忽略了。想写成短推。",
+      "expected_behavior": "输出一条短推格式的文字（1个判断，观察→判断→轻量解释）",
+      "expected_pass": true
+    },
+    {
+      "id": "edge-no-material",
+      "category": "边界用例",
+      "input": "帮我写条推文。",
+      "expected_behavior": "不强行输出推文，而是追问输入来源（读了什么/遇到什么问题/想了什么）",
+      "expected_pass": true
+    },
+    {
+      "id": "edge-inappropriate-topic",
+      "category": "边界用例",
+      "input": "今天跟同事吃饭，他太能说了，真烦。",
+      "expected_behavior": "告知话题不适合 X（公共价值不大），给出替代方向",
+      "expected_pass": true
+    },
+    {
+      "id": "normal-x-article",
+      "category": "正常用例",
+      "input": "最近三个月在做一个 AI Code Review 的实验。输入：团队用了 Cursor 后 review 习惯变了。启发：AI review 更适合 catch 逻辑错误而不是风格问题，需要调低对 style 的期望。反思：把 review 流程拆成 'AI 先过 + 人再过' 两轮比混在一起效果好很多。可复用：两轮 review 流程 + 分阶段期望矩阵。想写成 X Article。",
+      "expected_behavior": "输出 X Article 格式（问题背景→输入来源→关键启发→实践反思→方法沉淀）",
+      "expected_pass": true
+    },
+    {
+      "id": "edge-low-quality",
+      "category": "边界用例",
+      "input": "今天看了个东西，觉得挺有意思的。写一下。",
+      "expected_behavior": "引导更多输入：为什么觉得有意思？具体看了什么？",
+      "expected_pass": true
+    },
+    {
+      "id": "edge-forbidden-style",
+      "category": "边界用例",
+      "input": "家人们，这个工具真的狠狠封神了！普通人一定要试试，建议收藏反复看！写条推文推一下。",
+      "expected_behavior": "识别出禁止用语，重申风格原则，提供改写替代方案",
+      "expected_pass": true
+    },
+    {
+      "id": "edge-fact-risk",
+      "category": "边界用例",
+      "input": "最近看到一组数据说 90% 的 AI 创业公司会在第一年倒闭，我觉得这个数字很能说明问题。写条推文。",
+      "expected_behavior": "标记数字需要事实核查，弱化确定性表述，建议核实来源",
+      "expected_pass": true
+    }
+  ]
+}
